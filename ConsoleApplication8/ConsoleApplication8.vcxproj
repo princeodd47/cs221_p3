@@ -76,6 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BookRecord.h" />
+    <ClInclude Include="Book_Database.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BookRecord.cpp" />
+    <ClCompile Include="Book_Database.cpp" />
+    <ClCompile Include="test_BookRecord.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
