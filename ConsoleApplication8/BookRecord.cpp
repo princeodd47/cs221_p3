@@ -8,6 +8,7 @@
 #include "BookRecord.h"
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 //--------------------------------------------------------
@@ -129,7 +130,12 @@ void BookRecord::setNumberInStock(int count)
 //--------------------------------------------------------
 void BookRecord::printRecord()
 {
-    cout << m_sTitle << " " << m_lStockNum << " " << m_iClassification << " " << m_dCost << " " << m_iCount << endl;
+    cout << setw(30) << left << m_sTitle
+		 << setw(5) << m_lStockNum
+		 << setw(5) << m_iClassification
+		 << "$" << setw(10) << m_dCost
+		 << setw(5) << m_iCount
+		 << endl;
 }
 
 //--------------------------------------------------------

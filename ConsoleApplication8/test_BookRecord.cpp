@@ -217,6 +217,20 @@ void test_setNext_getNext()
     delete br_2;
 }
 
+/*
+ * Book_Database Tests
+ */
+
+void test_readInventory()
+{
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+    //testDb->printDatabase();
+    cout << endl;
+
+    delete testDb;
+    testDb = NULL;
+}
 
 int main()
 {
@@ -239,10 +253,10 @@ int main()
     cout << endl;
 
 	cout << "================" << endl;
-    cout << "Book_DatabaseTests" << endl;
+    cout << "Book_Database Tests" << endl;
 	cout << "================" << endl;
     //auto tests
-
+	test_readInventory();
     //manual tests
 
 

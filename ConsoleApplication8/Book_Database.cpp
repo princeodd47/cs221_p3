@@ -23,6 +23,7 @@ Book_Database::~Book_Database()
 // Add the given book to the list
 bool Book_Database::addBook(BookRecord *br)
 {
+	br->printRecord();
 	return true;
 }
 
@@ -108,7 +109,31 @@ bool Book_Database::readDatabase(const char *filename)
 
     for(int i=0; i<numBooks; i++)
     {
-        // Your code to read the database goes here
+        BookRecord *tempBr = new BookRecord();
+        // stockNum
+        getNextLine(line, 128);
+        tempBr->setStockNum(atol(line));
+
+        // title
+        getNextLine(line, 128);
+        char tempTitle[128];
+        strcpy(tempTitle, line);
+        tempBr->setTitle(tempTitle);
+
+        // classification
+        getNextLine(line, 128);
+        tempBr->setClassification(atoi(line));
+
+        // cost
+        getNextLine(line, 128);
+        tempBr->setCost(atof(line));
+
+        // numInStock
+        getNextLine(line, 128);
+        tempBr->setNumberInStock(atoi(line));
+
+        addBook(tempBr);
+
     }
     return true;
 }
