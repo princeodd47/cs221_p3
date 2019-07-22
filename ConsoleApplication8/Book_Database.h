@@ -14,7 +14,8 @@
 //       message if it fails to find any book(s) meeting the search criteria
 //-----------------------------------------------------------------------------
 
-#pragma once;
+//UNLINUX THIS
+//#pragma once;
 
 #include <iostream>
 #include <fstream>
@@ -43,8 +44,10 @@ class Book_Database
       int getNumberInStock(long sn);					// Get number of books of given stock number in stock 
       void PrintDatabase();                             	// Print all items in the database
    private:
+      bool addBook(BookRecord *br, BookRecord *curBr);       		// Add the given book to the list recursively
       void ClearDatabase(BookRecord *rt);              	// Recursively remove any items from the list
       bool getNextLine(char *line, int lineLen);   		// Read next line from a file
+      BookRecord *searchByStockNumber(long stockNum, BookRecord *curBr);    	// Search for a book by stock number
       void searchByClassification(int cl, BookRecord *rt);	// Recursive search by classification
       void searchByCost(double min, double max, BookRecord *rt);// Recursive search by cost range
       void PrintDatabase(BookRecord *rt);               	// Recursive print all

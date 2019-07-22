@@ -6,6 +6,7 @@
 *   This program is entirely my own work
 *******************************************************************/
 #include "Book_Database.h"
+#include<cstring>
 
 // Class constructor
 Book_Database::Book_Database()
@@ -23,8 +24,89 @@ Book_Database::~Book_Database()
 // Add the given book to the list
 bool Book_Database::addBook(BookRecord *br)
 {
-	br->printRecord();
-	return true;
+    if(m_pRoot == NULL)
+    {
+        m_pRoot = br;
+        return true;
+    }
+
+    return addBook(br, m_pRoot);
+
+    // DELETE THIS LATER
+    // Was an interative attempt to add the record
+    //BookRecord *curBr = new BookRecord;
+    //curBr = m_pRoot;
+
+    //while(curBr != NULL)
+    //{
+    //    if(br->getStockNum() < curBr->getStockNum())
+    //    {
+    //        //Go left
+    //        if(curBr->getLeft() == NULL)
+    //        {
+    //            //curBr->set
+    //        }
+    //        curBr = curBr->m_pLeft;
+    //    }
+    //    else if(br->getStockNum() > curBr->getStockNum())
+    //    {
+    //        //Go right
+    //        curBr = curBr->m_pRight;
+    //    }
+    //    else if(br->getStockNum() == curBr->getStockNum())
+    //    {
+    //        //already exists: combine NumberOfBooks
+    //        break;
+    //    }
+    //}
+
+    //delete curBr;
+    //curBr = NULL;
+	//return true;
+}
+
+// Add the given book to the list
+bool Book_Database::addBook(BookRecord *br, BookRecord *curBr)
+{
+    bool retVal = false;
+    //cout << br->getStockNum() << ": Add (" << curBr->getStockNum() << ")" << endl;
+    if(br->getStockNum() < curBr->getStockNum())
+    {
+        //cout << br->getStockNum() << ": Go left" << endl;
+        if(curBr->m_pLeft == NULL)
+        {
+            curBr->m_pLeft = br;
+            retVal = true;
+        }
+        else
+        {
+            retVal = addBook(br, curBr->m_pLeft);
+        }
+    }
+    else if(br->getStockNum() > curBr->getStockNum())
+    {
+        //cout << br->getStockNum() << ": Go right" << endl;
+        if(curBr->m_pRight == NULL)
+        {
+            curBr->m_pRight = br;
+            retVal = true;
+        }
+        else
+        {
+            retVal = addBook(br, curBr->m_pRight);
+        }
+    }
+    else if(br->getStockNum() == curBr->getStockNum())
+    {
+        //already exists: combine NumberOfBooks
+        //cout << br->getStockNum() << " found" << endl;
+        //cout << "numInStock: " << curBr->getNumberInStock() << " + "
+        //     << br->getNumberInStock() << endl;
+        curBr->setNumberInStock(br->getNumberInStock() + curBr->getNumberInStock());
+        retVal = true;
+    }
+
+	return retVal;
 }
 
 // Remove a book from the list
@@ -37,8 +119,40 @@ BookRecord *Book_Database::removeBook(long stockNum)
 // Search for a book by stock number
 BookRecord *Book_Database::searchByStockNumber(long stockNum)
 {
-	BookRecord *tempBr = new BookRecord;
-	return tempBr;
+	//BookRecord *tempBr = new BookRecord;
+	//return tempBr;
+    if(m_pRoot == NULL)
+    {
+        cout << "Database is empty.";
+        return NULL;
+    }
+    return searchByStockNumber(stockNum, m_pRoot);
+}
+
+BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
+{
+    BookRecord *curBr = new BookRecord;
+    curBr = m_pRoot;
+
+    if(stockNum < curBr->getStockNum())
+    {
+        //go left
+    }
+    else if(stockNum > curBr->getStockNum())
+    {
+        //go right
+    }
+    else if(stockNum == curBr->getStockNum())
+    {
+        //found it
+    }
+    else
+    {
+        cout << "Record not found." << endl;
+        return NULL;
+    }
+
+    return curBr;
 }
 
 // Search for all books of the given classification
@@ -60,6 +174,14 @@ int Book_Database::getNumberInStock(long sn)
 // Print all items in the database
 void Book_Database::PrintDatabase()
 {
+    if(m_pRoot == NULL)
+    {
+        cout << "Database is empty." << endl;
+    }
+    else
+    {
+        PrintDatabase(m_pRoot);
+    }
 }
 
 // Recursively remove any items from the list
@@ -80,6 +202,18 @@ void Book_Database::searchByCost(double min, double max, BookRecord *rt)
 // Recursive print all
 void Book_Database::PrintDatabase(BookRecord *rt)
 {
+    if(rt != NULL)
+    {
+        if(rt->m_pLeft != NULL)
+        {
+            PrintDatabase(rt->m_pLeft);
+        }
+        rt->printRecord();
+        if(rt->m_pRight != NULL)
+        {
+            PrintDatabase(rt->m_pRight);
+        }
+    }
 }
 
 

@@ -4,7 +4,7 @@
 # and cost. Each on a separate line.
 # And, yes I know the book names aren't very creative.  But, we all
 # have our off days.
-10
+11
 567
 More Fun With C++
 613
@@ -64,4 +64,10 @@ C++ for Geniuses
 613
 44.25
 29
+
+987
+C++ for Geniuses
+613
+44.25
+71
 

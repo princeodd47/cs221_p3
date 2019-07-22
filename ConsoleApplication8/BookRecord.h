@@ -16,7 +16,6 @@ class BookRecord {
         int m_iClassification;
         double m_dCost;
         int m_iCount;
-        BookRecord *m_pNext;
     public:
 		BookRecord *m_pLeft;
 		BookRecord *m_pRight;
@@ -34,6 +33,4 @@ class BookRecord {
         int getNumberInStock();
         void setNumberInStock(int count);
         void printRecord();
-        void setNext(BookRecord *next);
-        BookRecord *getNext();
 };

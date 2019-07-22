@@ -14,8 +14,7 @@ void test_BookRecordDefault()
        br->getStockNum() != 0 ||
        br->getClassification() != 0 ||
        br->getCost() != 0.00 ||
-       br->getNumberInStock() != 0 ||
-       br->getNext() != NULL)
+       br->getNumberInStock() != 0)
     {
         cout << "BookRecordDefault cosntructor test failed" << endl;
     }
@@ -185,7 +184,7 @@ void test_printRecord()
     char tempTitle[32];
     strcpy(tempTitle , "foo bar");
 
-    BookRecord *br = new BookRecord(tempTitle, 123456, 5, 3.45);
+    BookRecord *br = new BookRecord(tempTitle, 1234, 5, 3.45);
     cout << "test_printRecord needs to be checked manually" << endl;
 
     br->printRecord();
@@ -194,38 +193,20 @@ void test_printRecord()
     delete br;
 }
 
-void test_setNext_getNext()
-{
-    
-    BookRecord *br_1 = new BookRecord("foo", 123456, 5, 3.45);
-    BookRecord *br_2 = new BookRecord("bar", 654321, 1, 2.12);
-    br_1->setNext(br_2);
-    BookRecord *test_br = br_1->getNext();
-
-    char tempTitle[32];
-    test_br->getTitle(tempTitle);
-    if(strcmp(tempTitle, "bar") == 0)
-    {
-        cout << "setNext_getNext test passed" << endl;
-    } else {
-        cout << "setNext_getNext test failed" << endl;
-    }
-
-    br_1 = NULL;
-    delete br_1;
-    br_2 = NULL;
-    delete br_2;
-}
-
 /*
  * Book_Database Tests
  */
 
 void test_readInventory()
 {
+    cout << endl;
+    cout << "===================" << endl;
+    cout << "test_readInventory needs to be checked " << "manually" <<  endl;
+    cout << "Expected output: 10 unique records, ordered by stockNum, and 987 has 100 numInStock" << endl;
+    cout << "===================" << endl;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
-    //testDb->printDatabase();
+    testDb->PrintDatabase();
     cout << endl;
 
     delete testDb;
@@ -249,7 +230,6 @@ int main()
     test_getNumberInStock();
     test_setNumberInStock();
     test_printRecord();
-    test_setNext_getNext();
     cout << endl;
 
 	cout << "================" << endl;
@@ -259,7 +239,7 @@ int main()
 	test_readInventory();
     //manual tests
 
-
-	system("pause");
+    //UNLINUX THIS
+	//system("pause");
     return 0;
 }
