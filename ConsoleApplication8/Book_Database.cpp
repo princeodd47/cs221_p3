@@ -154,10 +154,6 @@ BookRecord *Book_Database::removeBook(long stockNum, BookRecord *curBr)
 // Search for a book by stock number
 BookRecord *Book_Database::searchByStockNumber(long stockNum)
 {
-    // Do cool things here.
-
-	//BookRecord *tempBr = new BookRecord;
-	//return tempBr;
     if(m_pRoot == NULL)
     {
         cout << "Database is empty.";
@@ -196,7 +192,26 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
 // Search for all books of the given classification
 void Book_Database::searchByClassification(int cl)
 {
-    // Do cool things here.
+    if(m_pRoot != NULL)
+	{
+		searchByClassification(cl, m_pRoot);
+	}
+}
+
+// Recursive search by classification
+void Book_Database::searchByClassification(int cl, BookRecord *rt)
+{
+    if(rt != NULL)
+	{
+		searchByClassification(cl, rt->m_pLeft);
+
+		if(rt->getClassification() == cl)
+		{
+			rt->printRecord();
+		}
+
+		searchByClassification(cl, rt->m_pRight);
+	}
 }
 
 // Search for all books whose cost is within the given range
@@ -263,12 +278,6 @@ void Book_Database::PrintDatabase(BookRecord *rt)
 
 // Recursively remove any items from the list
 void Book_Database::ClearDatabase(BookRecord *rt)
-{
-    // Do cool things here.
-}
-
-// Recursive search by classification
-void Book_Database::searchByClassification(int cl, BookRecord *rt)
 {
     // Do cool things here.
 }

@@ -375,6 +375,46 @@ void test_searchByCost()
     testDb = NULL;
 }
 
+void test_searchByClassificationNotFound()
+{
+	cout << endl;
+    cout << "===================" << endl;
+    cout << "test_searchByClassificationNotFound needs to be checked manually" <<  endl;
+    cout << "Expected output: no records found" << endl;
+    cout << "===================" << endl;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+
+	testDb->searchByClassification(614);
+
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_searchByClassification()
+{
+	cout << endl;
+    cout << "===================" << endl;
+    cout << "test_searchByClassification needs to be checked manually" <<  endl;
+    cout << "Expected output: 6 records found with classification 613" << endl;
+    cout << "===================" << endl;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+
+	testDb->searchByClassification(613);
+
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_getNumberInStockNotFound()
+{
+}
+
+void test_getNumberInStock()
+{
+}
+
 int main()
 {
 	cout << "================" << endl;
@@ -402,11 +442,15 @@ int main()
 	test_searchByStockNumberNotFound();
 	test_removeBookEmptyDatabase();
 	test_removeBookNotFound();
+	test_getNumberInStockNotFound()
+	test_getNumberInStock();
 
     //manual tests
 	test_readInventory();
 	test_searchByCostNotFound();
 	test_searchByCost();
+	test_searchByClassificationNotFound();
+	test_searchByClassification();
 
 	system("pause");
     return 0;
