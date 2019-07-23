@@ -213,6 +213,15 @@ void test_readInventory()
     testDb = NULL;
 }
 
+void test_searchByStockNumber()
+{
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+
+    delete testDb;
+    testDb = NULL;
+}
+
 int main()
 {
 	cout << "================" << endl;
@@ -236,8 +245,9 @@ int main()
     cout << "Book_Database Tests" << endl;
 	cout << "================" << endl;
     //auto tests
-	test_readInventory();
+    test_searchByStockNumber();
     //manual tests
+	test_readInventory();
 
     //UNLINUX THIS
 	//system("pause");

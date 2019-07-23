@@ -112,6 +112,7 @@ bool Book_Database::addBook(BookRecord *br, BookRecord *curBr)
 // Remove a book from the list
 BookRecord *Book_Database::removeBook(long stockNum)
 {
+    // Do cool things here.
 	BookRecord *tempBr = new BookRecord;
 	return tempBr;
 }
@@ -119,6 +120,8 @@ BookRecord *Book_Database::removeBook(long stockNum)
 // Search for a book by stock number
 BookRecord *Book_Database::searchByStockNumber(long stockNum)
 {
+    // Do cool things here.
+
 	//BookRecord *tempBr = new BookRecord;
 	//return tempBr;
     if(m_pRoot == NULL)
@@ -131,43 +134,44 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum)
 
 BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
 {
-    BookRecord *curBr = new BookRecord;
-    curBr = m_pRoot;
+    // Do cool things here.
 
     if(stockNum < curBr->getStockNum())
     {
         //go left
+        return searchByStockNumber(stockNum, curBr->m_pLeft);
     }
     else if(stockNum > curBr->getStockNum())
     {
         //go right
+        return searchByStockNumber(stockNum, curBr->m_pRight);
     }
     else if(stockNum == curBr->getStockNum())
     {
-        //found it
-    }
-    else
-    {
-        cout << "Record not found." << endl;
-        return NULL;
+        return curBr;
     }
 
-    return curBr;
+    cout << "Record not found." << endl;
+    return NULL;
+
 }
 
 // Search for all books of the given classification
 void Book_Database::searchByClassification(int cl)
 {
+    // Do cool things here.
 }
 
 // Search for all books whose cost is within the given range
 void Book_Database::searchByCost(double min, double max)
 {
+    // Do cool things here.
 }
 
 // Get number of books of given stock number in stock 
 int Book_Database::getNumberInStock(long sn)
 {
+    // Do cool things here.
 	return 1;
 }
 
@@ -182,21 +186,6 @@ void Book_Database::PrintDatabase()
     {
         PrintDatabase(m_pRoot);
     }
-}
-
-// Recursively remove any items from the list
-void Book_Database::ClearDatabase(BookRecord *rt)
-{
-}
-
-// Recursive search by classification
-void Book_Database::searchByClassification(int cl, BookRecord *rt)
-{
-}
-
-// Recursive search by cost range
-void Book_Database::searchByCost(double min, double max, BookRecord *rt)
-{
 }
 
 // Recursive print all
@@ -214,6 +203,24 @@ void Book_Database::PrintDatabase(BookRecord *rt)
             PrintDatabase(rt->m_pRight);
         }
     }
+}
+
+// Recursively remove any items from the list
+void Book_Database::ClearDatabase(BookRecord *rt)
+{
+    // Do cool things here.
+}
+
+// Recursive search by classification
+void Book_Database::searchByClassification(int cl, BookRecord *rt)
+{
+    // Do cool things here.
+}
+
+// Recursive search by cost range
+void Book_Database::searchByCost(double min, double max, BookRecord *rt)
+{
+    // Do cool things here.
 }
 
 
