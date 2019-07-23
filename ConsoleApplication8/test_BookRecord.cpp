@@ -703,6 +703,42 @@ void test_removeBookCase4()
     testDb = NULL;
 }
 
+void test_removeBookCase5()
+{
+	// Disabled
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	testBr = testDb->removeBook(234);
+	if(testBr->getStockNum() != 234)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(345);
+	if(testBr->m_pLeft == NULL || testBr->m_pRight == NULL ||
+		testBr->m_pLeft->getStockNum() != 123)
+	{
+		testPass = false;
+	}
+
+	if(testPass)
+	{
+		cout << "removeBookCase4 passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase4 failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
 int main()
 {
 	cout << "================" << endl;
@@ -737,6 +773,7 @@ int main()
 	test_removeBookCase2();
 	//test_removeBookCase3();
 	test_removeBookCase4();
+	//test_removeBookCase5();
 
     //manual tests
 	test_readInventory();

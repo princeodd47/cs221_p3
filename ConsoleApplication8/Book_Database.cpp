@@ -143,6 +143,8 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		{
 			parBr->m_pRight = NULL;
 		}
+		curBr->m_pLeft = NULL;
+		curBr->m_pRight = NULL;
 		return curBr;
 	}
 	else if(parBr == NULL && curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
@@ -158,13 +160,25 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		if(parBr->m_pLeft->getStockNum() == stockNum)
 		{
 			parBr->m_pLeft = curBr->m_pLeft;
+			curBr->m_pLeft = NULL;
+			curBr->m_pRight = NULL;
 			return curBr;
 		}
 		else if(parBr->m_pRight->getStockNum() == stockNum)
 		{
 			parBr->m_pRight = curBr->m_pRight;
+			curBr->m_pLeft = NULL;
+			curBr->m_pRight = NULL;
 			return curBr;
 		}
+	}
+	else if(parBr == NULL && curBr->m_pLeft != NULL && curBr->m_pRight == NULL)
+	{
+		// Case 5: Root node, 1 left child
+		m_pRoot = curBr->m_pLeft;
+		curBr->m_pLeft = NULL;
+		curBr->m_pRight = NULL;
+		return curBr;
 	}
 
     return NULL;
