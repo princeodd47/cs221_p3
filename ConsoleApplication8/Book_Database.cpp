@@ -145,6 +145,13 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		}
 		return curBr;
 	}
+	else if(parBr == NULL && curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
+	{
+		// Case 3: Remove leaf node, root, last in tree
+
+		// Do cool stuff here
+		return curBr;
+	}
 	else if(curBr->m_pLeft != NULL && curBr->m_pRight == NULL)
 	{
 		// Case 4: Node not root, not leaf, only left child
@@ -160,7 +167,6 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		}
 	}
 
-    cout << "Record not found." << endl;
     return NULL;
 }
 
@@ -223,7 +229,6 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
 {
 	if(curBr == NULL)
 	{
-		cout << "Record not found." << endl;
 		return NULL;
 	}
 
@@ -242,7 +247,6 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
         return curBr;
     }
 
-    cout << "Record not found." << endl;
     return NULL;
 }
 

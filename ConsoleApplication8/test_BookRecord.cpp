@@ -598,11 +598,11 @@ void test_removeBookCase1()
 
 	if(allTestsPass)
 	{
-		cout << "removeBookCase1 test passed" << endl;
+		cout << "removeBookCase1 passed" << endl;
 	}
 	else
 	{
-		cout << "removeBookCase1 test failed" << endl;
+		cout << "removeBookCase1 failed" << endl;
 	}
 
 	delete testBr;
@@ -637,6 +637,29 @@ void test_removeBookCase2()
 	else
 	{
 		cout << "removeBookCase2 failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookCase3()
+{
+	// Disabled
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	if(testPass)
+	{
+		cout << "removeBookCase4 passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase4 failed" << endl;
 	}
 
 	delete testBr;
@@ -712,6 +735,7 @@ int main()
 	test_removeBookEmptyDatabase();
 	test_removeBookCase1();
 	test_removeBookCase2();
+	//test_removeBookCase3();
 	test_removeBookCase4();
 
     //manual tests
