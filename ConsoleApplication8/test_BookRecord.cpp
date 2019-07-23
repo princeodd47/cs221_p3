@@ -213,6 +213,88 @@ void test_readInventory()
     testDb = NULL;
 }
 
+void test_readInventoryTreeNodes()
+{
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord;
+
+	testBr = testDb->searchByStockNumber(567);
+	if(testBr->m_pLeft == NULL || testBr->m_pLeft->getStockNum() != 345 ||
+		testBr->m_pRight == NULL || testBr->m_pRight->getStockNum() != 678)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(345);
+	if(testBr->m_pLeft == NULL || testBr->m_pLeft->getStockNum() != 234 ||
+		testBr->m_pRight == NULL || testBr->m_pRight->getStockNum() != 456)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(234);
+	if(testBr->m_pLeft == NULL || testBr->m_pLeft->getStockNum() != 123 ||
+		testBr->m_pRight != NULL)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(456);
+	if(testBr->m_pLeft != NULL || testBr->m_pRight != NULL)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(678);
+	if(testBr->m_pLeft != NULL ||
+		testBr->m_pRight == NULL || testBr->m_pRight->getStockNum() != 890)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(890);
+	if(testBr->m_pLeft == NULL || testBr->m_pLeft->getStockNum() != 765 ||
+		testBr->m_pRight == NULL || testBr->m_pRight->getStockNum() != 987)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(765);
+	if(testBr->m_pLeft != NULL ||
+		testBr->m_pRight == NULL || testBr->m_pRight->getStockNum() != 876)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(876);
+	if(testBr->m_pLeft != NULL || testBr->m_pRight != NULL)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(987);
+	if(testBr->m_pLeft != NULL || testBr->m_pRight != NULL)
+	{
+		testPass = false;
+	}
+
+	if(testPass == true)
+	{
+		cout << "readInventoryTreeNodes passed" << endl;
+	}
+	else
+	{
+		cout << "readInventoryTreeNodes failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+    delete testDb;
+    testDb = NULL;
+}
+
 void test_searchByStockNumberFound()
 {
 	bool allTestsPass = true;
@@ -447,6 +529,17 @@ void test_dbGetNumberInStock()
     testDb = NULL;
 }
 
+void test_removeBookLeaf()
+{
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+
+	//testDeb->removeBook(123);
+
+	delete testDb;
+    testDb = NULL;
+}
+
 int main()
 {
 	cout << "================" << endl;
@@ -470,12 +563,14 @@ int main()
     cout << "Book_Database Tests" << endl;
 	cout << "================" << endl;
     //auto tests
+	test_readInventoryTreeNodes();
 	test_searchByStockNumberFound();
 	test_searchByStockNumberNotFound();
-	test_removeBookEmptyDatabase();
-	test_removeBookNotFound();
 	test_dbGetNumberInStockNotFound();
 	test_dbGetNumberInStock();
+	test_removeBookEmptyDatabase();
+	test_removeBookNotFound();
+	test_removeBookLeaf();
 
     //manual tests
 	test_readInventory();
