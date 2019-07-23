@@ -113,8 +113,42 @@ bool Book_Database::addBook(BookRecord *br, BookRecord *curBr)
 BookRecord *Book_Database::removeBook(long stockNum)
 {
     // Do cool things here.
+	if(m_pRoot == NULL)
+	{
+		cout << "Database is empty" << endl;
+		return NULL;
+	}
+
 	BookRecord *tempBr = new BookRecord;
+	tempBr = removeBook(stockNum, m_pRoot);
 	return tempBr;
+}
+
+BookRecord *Book_Database::removeBook(long stockNum, BookRecord *curBr)
+{
+	if(curBr == NULL)
+	{
+		cout << "Record not found." << endl;
+		return NULL;
+	}
+
+    if(stockNum < curBr->getStockNum())
+    {
+        //go left
+        return searchByStockNumber(stockNum, curBr->m_pLeft);
+    }
+    else if(stockNum > curBr->getStockNum())
+    {
+        //go right
+        return searchByStockNumber(stockNum, curBr->m_pRight);
+    }
+    else if(stockNum == curBr->getStockNum())
+    {
+        return curBr;
+    }
+
+    cout << "Record not found." << endl;
+    return NULL;
 }
 
 // Search for a book by stock number
@@ -134,7 +168,11 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum)
 
 BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
 {
-    // Do cool things here.
+	if(curBr == NULL)
+	{
+		cout << "Record not found." << endl;
+		return NULL;
+	}
 
     if(stockNum < curBr->getStockNum())
     {
@@ -153,7 +191,6 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
 
     cout << "Record not found." << endl;
     return NULL;
-
 }
 
 // Search for all books of the given classification
@@ -165,7 +202,26 @@ void Book_Database::searchByClassification(int cl)
 // Search for all books whose cost is within the given range
 void Book_Database::searchByCost(double min, double max)
 {
-    // Do cool things here.
+    if(m_pRoot != NULL)
+	{
+		searchByCost(min, max, m_pRoot);
+	}
+}
+
+// Recursive search by cost range
+void Book_Database::searchByCost(double min, double max, BookRecord *rt)
+{
+	if(rt != NULL)
+	{
+		searchByCost(min, max, rt->m_pLeft);
+
+		if(rt->getCost() >= min && rt->getCost() <= max)
+		{
+			rt->printRecord();
+		}
+
+		searchByCost(min, max, rt->m_pRight);
+	}
 }
 
 // Get number of books of given stock number in stock 
@@ -216,13 +272,6 @@ void Book_Database::searchByClassification(int cl, BookRecord *rt)
 {
     // Do cool things here.
 }
-
-// Recursive search by cost range
-void Book_Database::searchByCost(double min, double max, BookRecord *rt)
-{
-    // Do cool things here.
-}
-
 
 //--------------------------------------------
 // Function: readDatabase()

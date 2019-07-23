@@ -14,8 +14,7 @@
 //       message if it fails to find any book(s) meeting the search criteria
 //-----------------------------------------------------------------------------
 
-//UNLINUX THIS
-//#pragma once;
+#pragma once;
 
 #include <iostream>
 #include <fstream>
@@ -45,6 +44,7 @@ class Book_Database
       void PrintDatabase();                             	// Print all items in the database
    private:
       bool addBook(BookRecord *br, BookRecord *curBr);       		// Add the given book to the list recursively
+	  BookRecord *removeBook(long stockNum, BookRecord *curBr);              	// Remove a book from the list
       void ClearDatabase(BookRecord *rt);              	// Recursively remove any items from the list
       bool getNextLine(char *line, int lineLen);   		// Read next line from a file
       BookRecord *searchByStockNumber(long stockNum, BookRecord *curBr);    	// Search for a book by stock number

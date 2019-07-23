@@ -213,12 +213,165 @@ void test_readInventory()
     testDb = NULL;
 }
 
-void test_searchByStockNumber()
+void test_searchByStockNumberFound()
+{
+	bool allTestsPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord;
+
+	testBr = testDb->searchByStockNumber(890);
+	if(testBr == NULL || testBr->getStockNum() != 890)
+	{
+		allTestsPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(567);
+	if(testBr == NULL || testBr->getStockNum() != 567)
+	{
+		allTestsPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(234);
+	if(testBr == NULL || testBr->getStockNum() != 234)
+	{
+		allTestsPass = false;
+	}
+	
+	testBr = testDb->searchByStockNumber(123);
+	if(testBr == NULL || testBr->getStockNum() != 123)
+	{
+		allTestsPass = false;
+	}
+
+	if(allTestsPass)
+	{
+		cout << "searchByStockNumberFound test passed" << endl;
+	}
+	else
+	{
+		cout << "searchByStockNumberFound test failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+    delete testDb;
+    testDb = NULL;
+}
+
+void test_searchByStockNumberNotFound()
 {
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
 
+	BookRecord *testBr = new BookRecord;
+	testBr = testDb->searchByStockNumber(8900);
+	if(testBr == NULL)
+	{
+		cout << "searchByStockNumberNotFound test passed" << endl;
+	}
+	else
+	{
+		cout << "searchByStockNumberNotFound test failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
     delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookEmptyDatabase()
+{
+	bool allTestsPass = true;
+	Book_Database *testDb = new Book_Database();
+    //testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord;
+
+	
+	testBr = testDb->removeBook(8900);
+	if(testBr != NULL)
+	{
+		allTestsPass = false;
+	}
+
+	if(allTestsPass)
+	{
+		cout << "removeBookEmptyDatabase test passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookEmptyDatabase test failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+    delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookNotFound()
+{
+	bool allTestsPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord;
+
+	
+	testBr = testDb->removeBook(8900);
+	if(testBr != NULL)
+	{
+		allTestsPass = false;
+	}
+
+	if(allTestsPass)
+	{
+		cout << "removeBookNotFound test passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookNotFound test failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+    delete testDb;
+    testDb = NULL;
+}
+
+void test_searchByCostNotFound()
+{
+	cout << endl;
+    cout << "===================" << endl;
+    cout << "test_searchByCostNotFound needs to be checked manually" <<  endl;
+    cout << "Expected output: no records" << endl;
+    cout << "===================" << endl;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+
+	float minCost = 1;
+	float maxCost = 2;
+	testDb->searchByCost(minCost, maxCost);
+
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_searchByCost()
+{
+	cout << endl;
+    cout << "===================" << endl;
+    cout << "test_searchByCost needs to be checked manually" <<  endl;
+    cout << "Expected output: 6 records with cost between $32-$45 " << endl;
+    cout << "===================" << endl;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+
+	float minCost = 32;
+	float maxCost = 45;
+	testDb->searchByCost(minCost, maxCost);
+
+	delete testDb;
     testDb = NULL;
 }
 
@@ -245,11 +398,16 @@ int main()
     cout << "Book_Database Tests" << endl;
 	cout << "================" << endl;
     //auto tests
-    test_searchByStockNumber();
+	test_searchByStockNumberFound();
+	test_searchByStockNumberNotFound();
+	test_removeBookEmptyDatabase();
+	test_removeBookNotFound();
+
     //manual tests
 	test_readInventory();
+	test_searchByCostNotFound();
+	test_searchByCost();
 
-    //UNLINUX THIS
-	//system("pause");
+	system("pause");
     return 0;
 }
