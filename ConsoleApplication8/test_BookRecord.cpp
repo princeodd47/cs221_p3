@@ -218,7 +218,7 @@ void test_readInventoryTreeNodes()
 	bool testPass = true;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
-	BookRecord *testBr = new BookRecord;
+	BookRecord *testBr = new BookRecord();
 
 	testBr = testDb->searchByStockNumber(567);
 	if(testBr->m_pLeft == NULL || testBr->m_pLeft->getStockNum() != 345 ||
@@ -300,7 +300,7 @@ void test_searchByStockNumberFound()
 	bool allTestsPass = true;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
-	BookRecord *testBr = new BookRecord;
+	BookRecord *testBr = new BookRecord();
 
 	testBr = testDb->searchByStockNumber(890);
 	if(testBr == NULL || testBr->getStockNum() != 890)
@@ -346,7 +346,7 @@ void test_searchByStockNumberNotFound()
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
 
-	BookRecord *testBr = new BookRecord;
+	BookRecord *testBr = new BookRecord();
 	testBr = testDb->searchByStockNumber(8900);
 	if(testBr == NULL)
 	{
@@ -368,7 +368,7 @@ void test_removeBookEmptyDatabase()
 	bool allTestsPass = true;
 	Book_Database *testDb = new Book_Database();
     //testDb->readDatabase("BookData.txt");
-	BookRecord *testBr = new BookRecord;
+	BookRecord *testBr = new BookRecord();
 
 	
 	testBr = testDb->removeBook(8900);
@@ -397,7 +397,7 @@ void test_removeBookNotFound()
 	bool allTestsPass = true;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
-	BookRecord *testBr = new BookRecord;
+	BookRecord *testBr = new BookRecord();
 
 	
 	testBr = testDb->removeBook(8900);
@@ -509,6 +509,88 @@ void test_dbGetNumberInStockNotFound()
     testDb = NULL;
 }
 
+void test_getParent()
+{
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	testBr = testDb->getParent(567);
+	if(testBr != NULL)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(345);
+	if(testBr == NULL || testBr->getStockNum() != 567)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(234);
+	if(testBr == NULL || testBr->getStockNum() != 345)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(456);
+	if(testBr == NULL || testBr->getStockNum() != 345)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(123);
+	if(testBr == NULL || testBr->getStockNum() != 234)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(678);
+	if(testBr == NULL || testBr->getStockNum() != 567)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(890);
+	if(testBr == NULL || testBr->getStockNum() != 678)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(765);
+	if(testBr == NULL || testBr->getStockNum() != 890)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(876);
+	if(testBr == NULL || testBr->getStockNum() != 765)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->getParent(987);
+	if(testBr == NULL || testBr->getStockNum() != 890)
+	{
+		testPass = false;
+	}
+
+	if(testPass)
+	{
+		cout << "getParent passed" << endl;
+	}
+	else
+	{
+		cout << "getParent failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
 void test_dbGetNumberInStock()
 {
 	Book_Database *testDb = new Book_Database();
@@ -531,11 +613,34 @@ void test_dbGetNumberInStock()
 
 void test_removeBookLeaf()
 {
+	bool testPass = true;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
 
-	//testDeb->removeBook(123);
+	testBr = testDb->removeBook(123);
+	if(testBr->getStockNum() != 123)
+	{
+		testPass = false;
+	}
 
+	testBr = testDb->searchByStockNumber(234);
+	if(testBr->m_pLeft != NULL || testBr->m_pRight != NULL)
+	{
+		testPass = false;
+	}
+
+	if(testPass)
+	{
+		cout << "removeBookLeaf passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookLeaf failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
 	delete testDb;
     testDb = NULL;
 }
@@ -568,9 +673,10 @@ int main()
 	test_searchByStockNumberNotFound();
 	test_dbGetNumberInStockNotFound();
 	test_dbGetNumberInStock();
+	test_getParent();
 	test_removeBookEmptyDatabase();
 	test_removeBookNotFound();
-	test_removeBookLeaf();
+	//test_removeBookLeaf();
 
     //manual tests
 	test_readInventory();

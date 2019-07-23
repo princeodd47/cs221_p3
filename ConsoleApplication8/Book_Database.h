@@ -38,16 +38,17 @@ class Book_Database
       bool addBook(BookRecord *br);                		// Add the given book to the list
       BookRecord *removeBook(long stockNum);              	// Remove a book from the list
       BookRecord *searchByStockNumber(long stockNum);    	// Search for a book by stock number
+	  BookRecord *getParent(long stockNum);					//Search for the parent node to the one with given stock number
       void searchByClassification(int cl);         		// Search for all books of the given classification
       void searchByCost(double min, double max);   		// Search for all books whose cost is within the given range
       int getNumberInStock(long sn);					// Get number of books of given stock number in stock 
       void PrintDatabase();                             	// Print all items in the database
    private:
       bool addBook(BookRecord *br, BookRecord *curBr);       		// Add the given book to the list recursively
-	  BookRecord *removeBook(long stockNum, BookRecord *curBr);              	// Remove a book from the list
       void ClearDatabase(BookRecord *rt);              	// Recursively remove any items from the list
       bool getNextLine(char *line, int lineLen);   		// Read next line from a file
       BookRecord *searchByStockNumber(long stockNum, BookRecord *curBr);    	// Search for a book by stock number
+	  BookRecord *getParent(long stockNum, BookRecord *curBr);					//Search for the parent node to the one with given stock number
       void searchByClassification(int cl, BookRecord *rt);	// Recursive search by classification
       void searchByCost(double min, double max, BookRecord *rt);// Recursive search by cost range
       void PrintDatabase(BookRecord *rt);               	// Recursive print all

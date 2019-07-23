@@ -119,36 +119,79 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		return NULL;
 	}
 
-	BookRecord *tempBr = new BookRecord;
-	tempBr = removeBook(stockNum, m_pRoot);
-	return tempBr;
-}
+	BookRecord *curBr = new BookRecord();
+	curBr = searchByStockNumber(stockNum);
 
-BookRecord *Book_Database::removeBook(long stockNum, BookRecord *curBr)
-{
+	//Case 1: Not found
 	if(curBr == NULL)
 	{
-		cout << "Record not found." << endl;
+		delete curBr;
 		return NULL;
 	}
 
-    if(stockNum < curBr->getStockNum())
-    {
-        //go left
-        return searchByStockNumber(stockNum, curBr->m_pLeft);
-    }
-    else if(stockNum > curBr->getStockNum())
-    {
-        //go right
-        return searchByStockNumber(stockNum, curBr->m_pRight);
-    }
-    else if(stockNum == curBr->getStockNum())
-    {
-        return curBr;
-    }
+	BookRecord *parBr = new BookRecord();
+	parBr = getParent(stockNum);
+
+	//Case 2: Leaf node, not root
+	if(curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
+	{
+		if(parBr->m_pLeft->getStockNum() == stockNum)
+		{
+			parBr->m_pLeft = NULL;
+		}
+		else
+		{
+			parBr->m_pRight = NULL;
+		}
+		return curBr;
+	}
 
     cout << "Record not found." << endl;
     return NULL;
+}
+
+BookRecord *Book_Database::getParent(long stockNum)
+{
+	if(m_pRoot == NULL)
+    {
+        return NULL;
+    }
+    return getParent(stockNum, m_pRoot);
+}
+
+BookRecord *Book_Database::getParent(long stockNum, BookRecord *curBr)
+{
+	// If parent is not found or is root node
+	if(curBr == NULL || curBr->getStockNum() == stockNum)
+	{
+		return NULL;
+	}
+
+	if(stockNum < curBr->getStockNum())
+	{
+		//Check left
+		if(curBr->m_pLeft->getStockNum() == stockNum)
+		{
+			return curBr;
+		}
+		else
+		{
+			return getParent(stockNum, curBr->m_pLeft);
+		}
+	}
+
+	if(stockNum > curBr->getStockNum())
+	{
+		//Check right
+		if(curBr->m_pRight->getStockNum() == stockNum)
+		{
+			return curBr;
+		}
+		else
+		{
+			return getParent(stockNum, curBr->m_pRight);
+		}
+	}
 }
 
 // Search for a book by stock number
