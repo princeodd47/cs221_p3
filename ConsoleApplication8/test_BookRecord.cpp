@@ -711,26 +711,76 @@ void test_removeBookCase5()
     testDb->readDatabase("BookData.txt");
 	BookRecord *testBr = new BookRecord();
 
-	testBr = testDb->removeBook(234);
-	if(testBr->getStockNum() != 234)
+	// Do cool things here.
+
+	if(testPass)
+	{
+		cout << "removeBookCase5 passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase5 failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookCase6()
+{
+	// Disabled
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	testBr = testDb->removeBook(678);
+	if(testBr->getStockNum() != 678)
 	{
 		testPass = false;
 	}
 
-	testBr = testDb->searchByStockNumber(345);
+	testBr = testDb->searchByStockNumber(567);
 	if(testBr->m_pLeft == NULL || testBr->m_pRight == NULL ||
-		testBr->m_pLeft->getStockNum() != 123)
+		testBr->m_pRight->getStockNum() != 890)
 	{
 		testPass = false;
 	}
 
 	if(testPass)
 	{
-		cout << "removeBookCase4 passed" << endl;
+		cout << "removeBookCase6 passed" << endl;
 	}
 	else
 	{
-		cout << "removeBookCase4 failed" << endl;
+		cout << "removeBookCase6 failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookCase7()
+{
+	// Disabled
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	// Do cool things here.
+
+	if(testPass)
+	{
+		cout << "removeBookCase5 passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase5 failed" << endl;
 	}
 
 	delete testBr;
@@ -774,6 +824,8 @@ int main()
 	//test_removeBookCase3();
 	test_removeBookCase4();
 	//test_removeBookCase5();
+	test_removeBookCase6();
+	//test_removeBookCase7();
 
     //manual tests
 	test_readInventory();
