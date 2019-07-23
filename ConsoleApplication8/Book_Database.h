@@ -42,6 +42,7 @@ class Book_Database
       void searchByClassification(int cl);         		// Search for all books of the given classification
       void searchByCost(double min, double max);   		// Search for all books whose cost is within the given range
       int getNumberInStock(long sn);					// Get number of books of given stock number in stock 
+	  long getMinStockNumFromNode(BookRecord *curBr);
       void PrintDatabase();                             	// Print all items in the database
    private:
       bool addBook(BookRecord *br, BookRecord *curBr);       		// Add the given book to the list recursively

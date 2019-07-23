@@ -376,6 +376,26 @@ void Book_Database::PrintDatabase()
     }
 }
 
+long Book_Database::getMinStockNumFromNode(BookRecord *curBr)
+{
+	if(curBr == NULL)
+	{
+		return NULL;
+	}
+
+	if(curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
+	{
+		return curBr->getStockNum();
+	}
+
+	while(curBr->m_pLeft != NULL)
+	{
+		curBr = curBr->m_pLeft;
+	}
+
+	return curBr->getStockNum();
+}
+
 // Recursive print all
 void Book_Database::PrintDatabase(BookRecord *rt)
 {

@@ -365,9 +365,9 @@ void test_searchByStockNumberNotFound()
 
 void test_removeBookEmptyDatabase()
 {
+	cout << endl;
 	bool allTestsPass = true;
 	Book_Database *testDb = new Book_Database();
-    //testDb->readDatabase("BookData.txt");
 	BookRecord *testBr = new BookRecord();
 
 	
@@ -559,6 +559,46 @@ void test_getParent()
 	delete testBr;
 	testBr = NULL;
 	delete testDb;
+    testDb = NULL;
+}
+
+void test_getMinStockNumFromNode()
+{
+	bool allTestsPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	testBr = testDb->searchByStockNumber(567);
+	if(testDb->getMinStockNumFromNode(testBr) != 123)
+	{
+		allTestsPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(678);
+	if(testDb->getMinStockNumFromNode(testBr) != 678)
+	{
+		allTestsPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(890);
+	if(testDb->getMinStockNumFromNode(testBr) != 765)
+	{
+		allTestsPass = false;
+	}
+
+	if(allTestsPass)
+	{
+		cout << "getMinStockNumFromNode passed" << endl;
+	}
+	else
+	{
+		cout << "getMinStockNumFromNode failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+    delete testDb;
     testDb = NULL;
 }
 
@@ -789,6 +829,30 @@ void test_removeBookCase7()
     testDb = NULL;
 }
 
+void test_removeBookCase8()
+{
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	// Do cool things here.
+
+	if(testPass)
+	{
+		cout << "removeBookCase5 passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase5 failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
 int main()
 {
 	cout << "================" << endl;
@@ -818,6 +882,7 @@ int main()
 	test_dbGetNumberInStockNotFound();
 	test_dbGetNumberInStock();
 	test_getParent();
+	test_getMinStockNumFromNode();
 	test_removeBookEmptyDatabase();
 	test_removeBookCase1();
 	test_removeBookCase2();
@@ -826,6 +891,7 @@ int main()
 	//test_removeBookCase5();
 	test_removeBookCase6();
 	//test_removeBookCase7();
+	test_removeBookCase8();
 
     //manual tests
 	test_readInventory();
