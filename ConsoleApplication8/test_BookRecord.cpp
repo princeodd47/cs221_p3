@@ -392,35 +392,6 @@ void test_removeBookEmptyDatabase()
     testDb = NULL;
 }
 
-void test_removeBookNotFound()
-{
-	bool allTestsPass = true;
-	Book_Database *testDb = new Book_Database();
-    testDb->readDatabase("BookData.txt");
-	BookRecord *testBr = new BookRecord();
-
-	
-	testBr = testDb->removeBook(8900);
-	if(testBr != NULL)
-	{
-		allTestsPass = false;
-	}
-
-	if(allTestsPass)
-	{
-		cout << "removeBookNotFound test passed" << endl;
-	}
-	else
-	{
-		cout << "removeBookNotFound test failed" << endl;
-	}
-
-	delete testBr;
-	testBr = NULL;
-    delete testDb;
-    testDb = NULL;
-}
-
 void test_searchByCostNotFound()
 {
 	cout << endl;
@@ -611,7 +582,36 @@ void test_dbGetNumberInStock()
     testDb = NULL;
 }
 
-void test_removeBookLeaf()
+void test_removeBookCase1()
+{
+	bool allTestsPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	
+	testBr = testDb->removeBook(8900);
+	if(testBr != NULL)
+	{
+		allTestsPass = false;
+	}
+
+	if(allTestsPass)
+	{
+		cout << "removeBookCase1 test passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase1 test failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+    delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookCase2()
 {
 	bool testPass = true;
 	Book_Database *testDb = new Book_Database();
@@ -632,11 +632,46 @@ void test_removeBookLeaf()
 
 	if(testPass)
 	{
-		cout << "removeBookLeaf passed" << endl;
+		cout << "removeBookCase2 passed" << endl;
 	}
 	else
 	{
-		cout << "removeBookLeaf failed" << endl;
+		cout << "removeBookCase2 failed" << endl;
+	}
+
+	delete testBr;
+	testBr = NULL;
+	delete testDb;
+    testDb = NULL;
+}
+
+void test_removeBookCase4()
+{
+	bool testPass = true;
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	BookRecord *testBr = new BookRecord();
+
+	testBr = testDb->removeBook(234);
+	if(testBr->getStockNum() != 234)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(345);
+	if(testBr->m_pLeft == NULL || testBr->m_pRight == NULL ||
+		testBr->m_pLeft->getStockNum() != 123)
+	{
+		testPass = false;
+	}
+
+	if(testPass)
+	{
+		cout << "removeBookCase4 passed" << endl;
+	}
+	else
+	{
+		cout << "removeBookCase4 failed" << endl;
 	}
 
 	delete testBr;
@@ -675,8 +710,9 @@ int main()
 	test_dbGetNumberInStock();
 	test_getParent();
 	test_removeBookEmptyDatabase();
-	test_removeBookNotFound();
-	//test_removeBookLeaf();
+	test_removeBookCase1();
+	test_removeBookCase2();
+	test_removeBookCase4();
 
     //manual tests
 	test_readInventory();

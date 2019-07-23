@@ -122,7 +122,7 @@ BookRecord *Book_Database::removeBook(long stockNum)
 	BookRecord *curBr = new BookRecord();
 	curBr = searchByStockNumber(stockNum);
 
-	//Case 1: Not found
+	// Case 1: Not found
 	if(curBr == NULL)
 	{
 		delete curBr;
@@ -132,9 +132,9 @@ BookRecord *Book_Database::removeBook(long stockNum)
 	BookRecord *parBr = new BookRecord();
 	parBr = getParent(stockNum);
 
-	//Case 2: Leaf node, not root
 	if(curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
 	{
+		// Case 2: Leaf node, not root, with 0 children
 		if(parBr->m_pLeft->getStockNum() == stockNum)
 		{
 			parBr->m_pLeft = NULL;
@@ -144,6 +144,20 @@ BookRecord *Book_Database::removeBook(long stockNum)
 			parBr->m_pRight = NULL;
 		}
 		return curBr;
+	}
+	else if(curBr->m_pLeft != NULL && curBr->m_pRight == NULL)
+	{
+		// Case 4: Node not root, not leaf, only left child
+		if(parBr->m_pLeft->getStockNum() == stockNum)
+		{
+			parBr->m_pLeft = curBr->m_pLeft;
+			return curBr;
+		}
+		else if(parBr->m_pRight->getStockNum() == stockNum)
+		{
+			parBr->m_pRight = curBr->m_pRight;
+			return curBr;
+		}
 	}
 
     cout << "Record not found." << endl;
