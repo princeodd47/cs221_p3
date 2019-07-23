@@ -206,6 +206,29 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		curBr->m_pRight = NULL;
 		return curBr;
 	}
+	else if(parBr != NULL && curBr->m_pLeft != NULL && curBr->m_pRight != NULL)
+	{
+		// Case 8: Root node, 2 children
+		// This does not work. Change getMinStockNumFromNode to getBottomMostLeafFromNode
+		long minStockNum = getMinStockNumFromNode(curBr);
+		BookRecord *tempBr = new BookRecord();
+		tempBr = removeBook(minStockNum);
+
+		if(parBr->m_pLeft->getStockNum() == stockNum)
+		{
+			parBr->m_pLeft = tempBr;
+			curBr->m_pLeft = NULL;
+			curBr->m_pRight = NULL;
+			return curBr;
+		}
+		else if(parBr->m_pRight->getStockNum() == stockNum)
+		{
+			parBr->m_pRight = tempBr;
+			curBr->m_pLeft = NULL;
+			curBr->m_pRight = NULL;
+			return curBr;
+		}
+	}
 
     return NULL;
 }
