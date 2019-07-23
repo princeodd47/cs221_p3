@@ -242,8 +242,24 @@ void Book_Database::searchByCost(double min, double max, BookRecord *rt)
 // Get number of books of given stock number in stock 
 int Book_Database::getNumberInStock(long sn)
 {
-    // Do cool things here.
-	return 1;
+    if(m_pRoot == NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		BookRecord *tempBr = new BookRecord;
+		tempBr = searchByStockNumber(sn);
+		if(tempBr == NULL)
+		{
+			return 0;
+		}
+		else
+		{
+			return tempBr->getNumberInStock();
+		}
+	}
+	return 0;
 }
 
 // Print all items in the database

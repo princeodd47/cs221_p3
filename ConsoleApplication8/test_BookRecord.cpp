@@ -407,12 +407,44 @@ void test_searchByClassification()
     testDb = NULL;
 }
 
-void test_getNumberInStockNotFound()
+void test_dbGetNumberInStockNotFound()
 {
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	int numInStock = 0;
+	numInStock = testDb->getNumberInStock(613);
+
+	if(numInStock == 0)
+	{
+		cout << "getNumberInStockNotFound test passed" << endl;
+	}
+	else
+	{
+		cout << "getNumberInStockNotFound test failed" << endl;
+	}
+
+	delete testDb;
+    testDb = NULL;
 }
 
-void test_getNumberInStock()
+void test_dbGetNumberInStock()
 {
+	Book_Database *testDb = new Book_Database();
+    testDb->readDatabase("BookData.txt");
+	int numInStock = 0;
+	numInStock = testDb->getNumberInStock(987);
+
+	if(numInStock == 100)
+	{
+		cout << "getNumberInStock test passed" << endl;
+	}
+	else
+	{
+		cout << "getNumberInStock test failed" << endl;
+	}
+
+	delete testDb;
+    testDb = NULL;
 }
 
 int main()
@@ -442,8 +474,8 @@ int main()
 	test_searchByStockNumberNotFound();
 	test_removeBookEmptyDatabase();
 	test_removeBookNotFound();
-	test_getNumberInStockNotFound()
-	test_getNumberInStock();
+	test_dbGetNumberInStockNotFound();
+	test_dbGetNumberInStock();
 
     //manual tests
 	test_readInventory();
