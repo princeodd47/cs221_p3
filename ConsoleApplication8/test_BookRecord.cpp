@@ -891,7 +891,7 @@ int main()
 	//test_removeBookCase5();
 	test_removeBookCase6();
 	//test_removeBookCase7();
-	test_removeBookCase8();
+	//test_removeBookCase8();
 
     //manual tests
 	test_readInventory();

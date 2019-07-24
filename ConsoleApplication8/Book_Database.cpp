@@ -109,6 +109,143 @@ bool Book_Database::addBook(BookRecord *br, BookRecord *curBr)
 	return retVal;
 }
 
+BookRecord *Book_Database::removeBookRCWay(long stockNum)
+{
+	BookRecord *back = new BookRecord();
+	BookRecord *temp = new BookRecord();
+	BookRecord *delBr = new BookRecord();
+	BookRecord *parBr = new BookRecord();
+
+	temp = m_pRoot;
+	back = NULL;
+
+	if(m_pRoot == NULL)
+	{
+		cout << "Database is empty." << endl;
+		return NULL;
+	}
+
+	// Does this need to happen?
+	//if(delBr->getNumberInStock() > 1)
+	//{
+	//	delBr->setNumberInSotck(delBr->getNumberInStock() - 1 );
+	//	return delBr;
+	//}
+
+	// Find the node to be deleted.
+	while((temp != NULL) && (stockNum  != temp->getStockNum()))
+	{
+		back = temp;
+		if(stockNum < temp->getStockNum())
+		{
+			temp = temp->m_pLeft;
+		}
+		else
+		{
+			temp = temp->m_pRight;
+		}
+	}
+
+	if(temp == NULL)
+	{
+		cout << "Book not found." << endl;
+		return NULL;
+	}
+	else
+	{
+		delBr = temp;
+		parBr = back;
+	}
+
+	// Deleting node with no children or one child on left.
+	if(delBr->m_pRight == NULL)
+	{
+		if(parBr == NULL) // If deleting root node
+		{
+			m_pRoot = delBr->m_pLeft;
+			delBr->m_pLeft = NULL; // Be safe, set to NULL
+			return delBr;
+		}
+		else
+		{
+			if(parBr->m_pLeft == delBr)
+			{
+				parBr->m_pLeft = delBr->m_pLeft;
+			}
+			else
+			{
+				parBr->m_pRight = delBr->m_pLeft;
+			}
+			delBr->m_pLeft = NULL; // Be safe, set to NULL
+			return delBr;
+		}
+	}
+	else
+	{
+		// Deleting node with one child on the right.
+		if(delBr->m_pLeft == NULL)
+		{
+			if(parBr == NULL) // If deleting root node.
+			{
+				m_pRoot = delBr->m_pRight;
+				delBr->m_pRight = NULL; // Be safe
+				return delBr;
+			}
+			else
+			{
+				if(parBr->m_pLeft == delBr)
+				{
+					parBr->m_pLeft = delBr->m_pRight;
+				}
+				else
+				{
+					parBr->m_pRight = delBr->m_pRight;
+				}
+				delBr->m_pRight = NULL; // Continue being safe
+				return delBr;
+			}
+		}
+		else // Deleting node with two children.
+		{
+			// Made a copy of the node to be deleted for returning after overwriting delBr.
+			BookRecord *retBr = dupeBr(delBr);
+			// Find the replacement value. Locate the node containing the largest value
+			// which is also smaller than the key to be deleted.
+			temp = delBr->m_pLeft;
+			back = delBr;
+			while(temp->m_pRight != NULL)
+			{
+				back = temp;
+				temp = temp->m_pRight;
+			}
+			// Copy replacement values into the node to be deleted.
+			//delBr->Key = temp->Key;
+			//delBr->fValue = temp->fValue;
+			//delBr->iValue = temp->iValue;
+			//strcpy(delBr->cArray, temp->cArray);
+
+			// Remove the replacement node.
+			if(back == delBr)
+			{
+				back->m_pLeft = temp->m_pLeft;
+			}
+			else
+			{
+				back->m_pRight = temp->m_pRight;
+			}
+			delete temp; // Dispose of this node.
+			return retBr; // Return the copy.
+		}
+	}
+}
+
+BookRecord *Book_Database::dupeBr(BookRecord *br)
+{
+	// Do cool things here.
+	BookRecord *tempBr = new BookRecord();
+	return tempBr;
+}
+
 // Remove a book from the list
 BookRecord *Book_Database::removeBook(long stockNum)
 {
@@ -292,6 +429,7 @@ BookRecord *Book_Database::searchByStockNumber(long stockNum, BookRecord *curBr)
 {
 	if(curBr == NULL)
 	{
+		cout << "Book not found." << endl;
 		return NULL;
 	}
 
