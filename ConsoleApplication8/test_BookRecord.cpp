@@ -908,7 +908,27 @@ void test_removeBookCase5()
 		testPass = false;
 	}
 
+	testBr = testDb->removeBook(876);
+	testBr = testDb->removeBook(765);
+	testBr = testDb->removeBook(987);
+	testBr = testDb->removeBook(890);
+	testBr = testDb->removeBook(678);
+
 	parBr = testDb->getParent(567);
+
+	testBr = testDb->searchByStockNumber(567);
+	if(testBr->m_pLeft->getStockNum() != 345)
+	{
+		cout << "removeBookCase5 failed 567's left is not 345" << endl;
+		testPass = false;
+	}
+
+	if(testBr->m_pRight != NULL)
+	{
+		cout << "removeBookCase5 failed 567's right is not NULL" << endl;
+		testPass = false;
+	}
+
 	testBr = testDb->removeBook(567);
 	if(testBr == NULL || testBr->getStockNum() != 567)
 	{
@@ -916,7 +936,7 @@ void test_removeBookCase5()
 		testPass = false;
 	}
 
-	if(!testDb->isEmpty())
+	if(testDb->isEmpty())
 	{
 		cout << "removeBookCase5 failed because is empty" << endl;
 		testPass = false;
@@ -933,12 +953,6 @@ void test_removeBookCase5()
 	if(testBr->m_pLeft != NULL)
 	{
 		cout << "removeBookCase5 failed because m_pLeft is not NULL." << endl;
-		testPass = false;
-	}
-		
-	if(testBr->m_pRight == NULL || testBr->m_pRight->getStockNum() != 678)
-	{
-		cout << "removeBookCase5 failed because m_pRight is NULL or not 678." << endl;
 		testPass = false;
 	}
 
@@ -961,7 +975,6 @@ void test_removeBookCase5()
 
 void test_removeBookCase6()
 {
-	// Disabled
 	bool testPass = true;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
@@ -997,25 +1010,116 @@ void test_removeBookCase6()
 
 void test_removeBookCase7()
 {
-	// Disabled
+	// Remove root node, one child on right
 	bool testPass = true;
 	Book_Database *testDb = new Book_Database();
     testDb->readDatabase("BookData.txt");
 	BookRecord *testBr = new BookRecord();
+	BookRecord *parBr = new BookRecord();
 
-	// Do cool things here.
+	parBr = testDb->getParent(123);
+	testBr = testDb->removeBook(123);
+
+
+	if(testBr == NULL || testBr->getStockNum() != 123 || parBr->m_pLeft != NULL || parBr->m_pRight != NULL)
+	{
+		cout << "removeBookCase7 failed when removing 123" << endl;
+		testPass = false;
+	}
+
+	parBr = testDb->getParent(234);
+	if(parBr->getStockNum() != 345)
+	{
+		cout << "removeBookCase7 failed: 234's parent is " << parBr->getStockNum() << " and not 345" << endl;
+		testPass = false;
+	}
+
+	testBr = testDb->removeBook(234);
+	if(testBr == NULL || testBr->getStockNum() != 234)
+	{
+		cout << "removeBookCase7 failed when removing 234" << endl;
+		testPass = false;
+	}
+
+	if(parBr->m_pLeft != NULL)
+		{
+		cout << "removeBookCase7 failed: 345's left is not NULL " << endl;
+		testPass = false;
+	}
+
+	if(parBr->m_pRight == NULL)
+	{
+		cout << "removeBookCase7 failed: 345's right is NULL" << endl;
+		testPass = false;
+	}
+
+	parBr = testDb->getParent(456);
+	testBr = testDb->removeBook(456);
+	if(testBr == NULL || testBr->getStockNum() != 456 || parBr->m_pLeft != NULL || parBr->m_pRight != NULL)
+	{
+		cout << "removeBookCase7 failed when removing 456" << endl;
+		testPass = false;
+	}
+
+	testBr = testDb->removeBook(876);
+	testBr = testDb->removeBook(765);
+	testBr = testDb->removeBook(987);
+	testBr = testDb->removeBook(890);
+	testBr = testDb->removeBook(345);
+
+	testBr = testDb->searchByStockNumber(567);
+	if(testBr->m_pLeft != NULL)
+	{
+		cout << "removeBookCase7 failed 567's left is not NULL" << endl;
+		testPass = false;
+	}
+
+	if(testBr->m_pRight->getStockNum() != 678)
+	{
+		cout << "removeBookCase7 failed 567's right is not 678" << endl;
+		testPass = false;
+	}
+
+	testBr = testDb->removeBook(567);
+	if(testBr == NULL || testBr->getStockNum() != 567)
+	{
+		cout << "removeBookCase7 failed when removing 567" << endl;
+		testPass = false;
+	}
+
+	if(testDb->isEmpty())
+	{
+		cout << "removeBookCase7 failed because is empty" << endl;
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(678);
+
+	if(testBr == NULL)
+	{
+		cout << "removeBookCase7 failed because can't find 678." << endl;
+		testPass = false;
+	}
+
+	if(testBr->m_pLeft != NULL)
+	{
+		cout << "removeBookCase7 failed because m_pLeft is not NULL." << endl;
+		testPass = false;
+	}
 
 	if(testPass)
 	{
-		cout << "removeBookCase5 passed" << endl;
+		cout << "removeBookCase7 passed" << endl;
 	}
 	else
 	{
-		cout << "removeBookCase5 failed" << endl;
+		cout << "removeBookCase7 failed" << endl;
 	}
 
 	delete testBr;
 	testBr = NULL;
+	delete parBr;
+	parBr = NULL;
 	delete testDb;
     testDb = NULL;
 }
@@ -1027,15 +1131,52 @@ void test_removeBookCase8()
     testDb->readDatabase("BookData.txt");
 	BookRecord *testBr = new BookRecord();
 
-	// Do cool things here.
+	testBr = testDb->removeBook(890);
+	if(testBr->getStockNum() != 890)
+	{
+		testPass = false;
+	}
+
+	testBr = testDb->searchByStockNumber(567);
+	if(testBr->m_pLeft->getStockNum() != 345)
+	{
+		cout << "removeBookCase8 failed because 567's left is not 345" << endl;
+	}
+	if(testBr->m_pRight == NULL)
+	{
+		cout << "removeBookCase8 failed because 567's right is null" << endl;
+	}
+	if((testBr->m_pRight != NULL) && (testBr->m_pRight->getStockNum() != 678))
+	{
+		cout << "removeBookCase8 failed because 567's right is not 678" << endl;
+	}
+
+	testBr = testDb->searchByStockNumber(678);
+	if(testBr->m_pRight == NULL)
+	{
+		cout << "removeBookCase8 failed because 678 was not found." << endl;
+		testPass = false;
+	}
+
+	if((testBr->m_pRight != NULL) && (testBr->m_pRight->getStockNum() != 876))
+	{
+		cout << "removeBookCase8 failed because 678's right is " << testBr->m_pRight->getStockNum() <<" and not 876." << endl;
+		testPass = false;
+	}
+
+	//testBr = testDb->searchByStockNumber(876);
+	//if((testBr->m_pLeft->getStockNum() != 765) && (testBr->m_pRight->getStockNum() != 987))
+	//{
+	//	testPass = false;
+	//}
 
 	if(testPass)
 	{
-		cout << "removeBookCase5 passed" << endl;
+		cout << "removeBookCase8 passed" << endl;
 	}
 	else
 	{
-		cout << "removeBookCase5 failed" << endl;
+		cout << "removeBookCase8 failed" << endl;
 	}
 
 	delete testBr;
@@ -1080,17 +1221,17 @@ int main()
 	test_removeBookCase2();
 	test_removeBookCase3();
 	test_removeBookCase4();
-	//test_removeBookCase5();
-	//test_removeBookCase6();
-	//test_removeBookCase7();
-	//test_removeBookCase8();
+	test_removeBookCase5();
+	test_removeBookCase6();
+	test_removeBookCase7();
+	test_removeBookCase8();
 
     //manual tests
-	test_readInventory();
-	test_searchByCostNotFound();
-	test_searchByCost();
-	test_searchByClassificationNotFound();
-	test_searchByClassification();
+	//test_readInventory();
+	//test_searchByCostNotFound();
+	//test_searchByCost();
+	//test_searchByClassificationNotFound();
+	//test_searchByClassification();
 
 	system("pause");
     return 0;

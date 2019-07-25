@@ -155,6 +155,10 @@ BookRecord *Book_Database::removeBook(long stockNum)
 	{
 		if(parBr == NULL) // If deleting root node
 		{
+			if(delBr->m_pLeft != NULL)
+			{
+				cout << "setting root to " << delBr->m_pLeft->getStockNum() << endl;
+			}
 			m_pRoot = delBr->m_pLeft;
 			delBr->m_pLeft = NULL; // Be safe, set to NULL
 			cout << "Removed " << delBr->getStockNum() << endl;
@@ -182,6 +186,10 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		{
 			if(parBr == NULL) // If deleting root node.
 			{
+				if(delBr->m_pRight != NULL)
+				{
+					cout << "setting root to " << delBr->m_pRight->getStockNum() << endl;
+				}
 				m_pRoot = delBr->m_pRight;
 				delBr->m_pRight = NULL; // Be safe
 				cout << "Removed " << delBr->getStockNum() << endl;
@@ -204,8 +212,10 @@ BookRecord *Book_Database::removeBook(long stockNum)
 		}
 		else // Deleting node with two children.
 		{
+			cout << "deleteing node with 2 children" << endl;
 			// Made a copy of the node to be deleted for returning after overwriting delBr.
-			BookRecord *retBr = dupeBr(delBr);
+			BookRecord *retBr = new BookRecord();
+			retBr = dupeBr(delBr);
 			// Find the replacement value. Locate the node containing the largest value
 			// which is also smaller than the key to be deleted.
 			temp = delBr->m_pLeft;
@@ -220,16 +230,42 @@ BookRecord *Book_Database::removeBook(long stockNum)
 			//delBr->fValue = temp->fValue;
 			//delBr->iValue = temp->iValue;
 			//strcpy(delBr->cArray, temp->cArray);
-			delBr = dupeBr(temp);
+			delBr = dupeBr(temp); //345
+			//delBr->setClassification(temp->getClassification());
+			//delBr->setCost(temp->getCost());
+			//delBr->setNumberInStock(temp->getNumberInStock());
+			//delBr->setStockNum(temp->getStockNum());
+			//char title[128];
+			//temp->getTitle(title);
+			//delBr->setTitle(title);
 
 			// Remove the replacement node.
 			if(back == delBr)
 			{
+				cout << "setting back left to ";
+				if(temp->m_pLeft != NULL)
+				{
+					cout << temp->m_pLeft->getStockNum() << endl;
+				}
+				else
+				{
+					cout << "NULL" << endl;
+				}
+
 				back->m_pLeft = temp->m_pLeft;
 			}
 			else
 			{
-				back->m_pRight = temp->m_pRight;
+				cout << "setting back right to ";
+				if(temp->m_pLeft != NULL)
+				{
+					cout << temp->m_pLeft->getStockNum() << endl;
+				}
+				else
+				{
+					cout << "NULL" << endl;
+				}
+				back->m_pRight = temp->m_pLeft;
 			}
 			delete temp; // Dispose of this node.
 			cout << "Removed " << retBr->getStockNum() << endl;
@@ -274,10 +310,11 @@ BookRecord *Book_Database::removeBookOld(long stockNum)
 	BookRecord *parBr = new BookRecord();
 	parBr = getParent(stockNum);
 
-	if(curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
+	if(parBr != NULL && curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
 	{
 		// Case 2: Leaf node, not root, with 0 children
-		if(parBr->m_pLeft->getStockNum() == stockNum)
+		cout << "case 2" << endl;
+		if(parBr->m_pLeft != NULL && parBr->m_pLeft->getStockNum() == stockNum)
 		{
 			parBr->m_pLeft = NULL;
 		}
@@ -287,23 +324,27 @@ BookRecord *Book_Database::removeBookOld(long stockNum)
 		}
 		curBr->m_pLeft = NULL;
 		curBr->m_pRight = NULL;
+		cout << "removed " << curBr->getStockNum() << endl;
 		return curBr;
 	}
 	else if(parBr == NULL && curBr->m_pLeft == NULL && curBr->m_pRight == NULL)
 	{
 		// Case 3: Remove leaf node, root, last in tree
-
-		// Do cool stuff here
+		cout << "case 3" << endl;
+		m_pRoot = NULL;
+		cout << "removed " << curBr->getStockNum() << endl;
 		return curBr;
 	}
-	else if(curBr->m_pLeft != NULL && curBr->m_pRight == NULL)
+	else if(parBr != NULL && curBr->m_pLeft != NULL && curBr->m_pRight == NULL)
 	{
 		// Case 4: Node not root, not leaf, only left child
+		cout << "case 4" << endl;
 		if(parBr->m_pLeft->getStockNum() == stockNum)
 		{
 			parBr->m_pLeft = curBr->m_pLeft;
 			curBr->m_pLeft = NULL;
 			curBr->m_pRight = NULL;
+			cout << "removed " << curBr->getStockNum() << endl;
 			return curBr;
 		}
 		else if(parBr->m_pRight->getStockNum() == stockNum)
@@ -311,25 +352,31 @@ BookRecord *Book_Database::removeBookOld(long stockNum)
 			parBr->m_pRight = curBr->m_pRight;
 			curBr->m_pLeft = NULL;
 			curBr->m_pRight = NULL;
+			cout << "removed " << curBr->getStockNum() << endl;
 			return curBr;
 		}
 	}
 	else if(parBr == NULL && curBr->m_pLeft != NULL && curBr->m_pRight == NULL)
 	{
 		// Case 5: Root node, 1 left child
+		cout << "case 5" << endl;
+		cout << "set m_pRoot = " << curBr->m_pLeft->getStockNum() << endl;
 		m_pRoot = curBr->m_pLeft;
 		curBr->m_pLeft = NULL;
 		curBr->m_pRight = NULL;
+		cout << "removed " << curBr->getStockNum() << endl;
 		return curBr;
 	}
-	else if(curBr->m_pLeft == NULL && curBr->m_pRight != NULL)
+	else if(parBr == NULL && curBr->m_pLeft == NULL && curBr->m_pRight != NULL)
 	{
 		// Case 6: Node not root, not leaf, only right child
+		cout << "case 6" << endl;
 		if(parBr->m_pLeft->getStockNum() == stockNum)
 		{
 			parBr->m_pLeft = curBr->m_pLeft;
 			curBr->m_pLeft = NULL;
 			curBr->m_pRight = NULL;
+			cout << "removed " << curBr->getStockNum() << endl;
 			return curBr;
 		}
 		else if(parBr->m_pRight->getStockNum() == stockNum)
@@ -337,6 +384,7 @@ BookRecord *Book_Database::removeBookOld(long stockNum)
 			parBr->m_pRight = curBr->m_pRight;
 			curBr->m_pLeft = NULL;
 			curBr->m_pRight = NULL;
+			cout << "removed " << curBr->getStockNum() << endl;
 			return curBr;
 		}
 	}
