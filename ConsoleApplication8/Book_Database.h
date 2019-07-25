@@ -37,7 +37,7 @@ class Book_Database
       bool readDatabase(const char *filename);           	// Read database from file
       bool addBook(BookRecord *br);                		// Add the given book to the list
       BookRecord *removeBook(long stockNum);              	// Remove a book from the list
-	  BookRecord *removeBookRCWay(long stockNum);              	// Remove a book from the list
+	  BookRecord *removeBookOld(long stockNum);              	// Remove a book from the list
       BookRecord *searchByStockNumber(long stockNum);    	// Search for a book by stock number
 	  BookRecord *getParent(long stockNum);					//Search for the parent node to the one with given stock number
       void searchByClassification(int cl);         		// Search for all books of the given classification
@@ -45,6 +45,7 @@ class Book_Database
       int getNumberInStock(long sn);					// Get number of books of given stock number in stock 
 	  long getMinStockNumFromNode(BookRecord *curBr);
       void PrintDatabase();                             	// Print all items in the database
+	  bool isEmpty();
    private:
       bool addBook(BookRecord *br, BookRecord *curBr);       		// Add the given book to the list recursively
       void ClearDatabase(BookRecord *rt);              	// Recursively remove any items from the list

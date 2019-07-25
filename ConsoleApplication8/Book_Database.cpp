@@ -109,7 +109,7 @@ bool Book_Database::addBook(BookRecord *br, BookRecord *curBr)
 	return retVal;
 }
 
-BookRecord *Book_Database::removeBookRCWay(long stockNum)
+BookRecord *Book_Database::removeBook(long stockNum)
 {
 	BookRecord *back = new BookRecord();
 	BookRecord *temp = new BookRecord();
@@ -124,13 +124,6 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 		cout << "Database is empty." << endl;
 		return NULL;
 	}
-
-	// Does this need to happen?
-	//if(delBr->getNumberInStock() > 1)
-	//{
-	//	delBr->setNumberInSotck(delBr->getNumberInStock() - 1 );
-	//	return delBr;
-	//}
 
 	// Find the node to be deleted.
 	while((temp != NULL) && (stockNum  != temp->getStockNum()))
@@ -164,6 +157,7 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 		{
 			m_pRoot = delBr->m_pLeft;
 			delBr->m_pLeft = NULL; // Be safe, set to NULL
+			cout << "Removed " << delBr->getStockNum() << endl;
 			return delBr;
 		}
 		else
@@ -177,6 +171,7 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 				parBr->m_pRight = delBr->m_pLeft;
 			}
 			delBr->m_pLeft = NULL; // Be safe, set to NULL
+			cout << "Removed " << delBr->getStockNum() << endl;
 			return delBr;
 		}
 	}
@@ -189,6 +184,7 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 			{
 				m_pRoot = delBr->m_pRight;
 				delBr->m_pRight = NULL; // Be safe
+				cout << "Removed " << delBr->getStockNum() << endl;
 				return delBr;
 			}
 			else
@@ -202,6 +198,7 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 					parBr->m_pRight = delBr->m_pRight;
 				}
 				delBr->m_pRight = NULL; // Continue being safe
+				cout << "Removed " << delBr->getStockNum() << endl;
 				return delBr;
 			}
 		}
@@ -223,6 +220,7 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 			//delBr->fValue = temp->fValue;
 			//delBr->iValue = temp->iValue;
 			//strcpy(delBr->cArray, temp->cArray);
+			delBr = dupeBr(temp);
 
 			// Remove the replacement node.
 			if(back == delBr)
@@ -234,6 +232,7 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 				back->m_pRight = temp->m_pRight;
 			}
 			delete temp; // Dispose of this node.
+			cout << "Removed " << retBr->getStockNum() << endl;
 			return retBr; // Return the copy.
 		}
 	}
@@ -241,13 +240,19 @@ BookRecord *Book_Database::removeBookRCWay(long stockNum)
 
 BookRecord *Book_Database::dupeBr(BookRecord *br)
 {
-	// Do cool things here.
-	BookRecord *tempBr = new BookRecord();
-	return tempBr;
+	BookRecord *retBr = new BookRecord();
+	char title[128];
+	br->getTitle(title);
+	retBr->setTitle(title);
+	retBr->setStockNum(br->getStockNum());
+	retBr->setClassification(br->getClassification());
+	retBr->setCost(br->getCost());
+	retBr->setNumberInStock(br->getNumberInStock());
+	return retBr;
 }
 
 // Remove a book from the list
-BookRecord *Book_Database::removeBook(long stockNum)
+BookRecord *Book_Database::removeBookOld(long stockNum)
 {
     // Do cool things here.
 	if(m_pRoot == NULL)
@@ -572,6 +577,18 @@ void Book_Database::PrintDatabase(BookRecord *rt)
             PrintDatabase(rt->m_pRight);
         }
     }
+}
+
+bool Book_Database::isEmpty()
+{
+	if(m_pRoot == NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 // Recursively remove any items from the list
